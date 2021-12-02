@@ -11,7 +11,7 @@ def ParseCsv( filePath ):
 
     return fileData
 
-def CountDepthIncreaseWondows( fileData, windowSize ):
+def CountDepthIncreaseByWindowsSize( fileData, windowSize ):
     count = 0
     for i in range( len(fileData) - windowSize ):
         if fileData[i] < fileData[i+windowSize]:
@@ -20,5 +20,5 @@ def CountDepthIncreaseWondows( fileData, windowSize ):
     return count
 if __name__ == '__main__':
     fileData = ParseCsv( "D:\\advent_of_code\\AOC_2021\\day1_sample.csv" )
-    print( 'Single Level increment {}'.format( CountDepthIncreaseWondows(fileData, 1) ) )
-    print( 'Window Level increment {}'.format( CountDepthIncreaseWondows(fileData, 3) ) )
+    print( 'Single Level increment {}'.format( CountDepthIncreaseByWindowsSize(fileData, 1) ) )
+    print( 'Window Level increment {}'.format( CountDepthIncreaseByWindowsSize(fileData, 3) ) )

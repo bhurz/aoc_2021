@@ -1,1 +1,1 @@
-Advent of Code 2021 solutions: hello
+Advent of Code 2021 solutions

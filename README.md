@@ -1,1 +1,1 @@
-Advent of Code 2021 solutions: test
+Advent of Code 2021 solutions

@@ -1,5 +1,6 @@
 import collections
 import re
+import sys
 
 MAPSIZE = 1000
 
@@ -18,7 +19,7 @@ def FuleSpent( positions ):
     minPosition = min( positionsCounter.keys() )
     maxPosition = max( positionsCounter.keys() )
     
-    minFuelSpent = float('inf')
+    minFuelSpent = sys.maxsize
     minFuelPosition = 0
 
     for p in range(minPosition, maxPosition + 1 ):
@@ -38,7 +39,7 @@ def FuleSpentExp( positions ):
     minPosition = min( positionsCounter.keys() )
     maxPosition = max( positionsCounter.keys() )
     
-    minFuelSpent = float('inf')
+    minFuelSpent = sys.maxsize
     minFuelPosition = 0
 
     for p in range(minPosition, maxPosition + 1 ):

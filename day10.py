@@ -8,9 +8,6 @@ class Solution:
     BRACKETS_PAIR_INVERTED = { ")":"(", ">":"<", "}":"{", "]":"["}
     BRACKETS_PAIR = { "(":")", "<":">", "{":"}", "[":"]"}
 
-    BRACKET_SCORE_MAPPING = { ")": 3, "]": 57, "}": 1197, ">": 25137 }
-    BRACKET_COMPLETION_SCORE_MAPPING = { ")": 1, "]": 2, "}": 3, ">": 4 }
-
     def __init__( self, filePath ):
         self.input = []
         with open( filePath, 'r' ) as fileHandle:
@@ -18,19 +15,20 @@ class Solution:
             for line in lines:
                 self.input.append(list(line.strip()))
     
-    def _computeScore(self, bracketList ):
+    def _computeCorruptedLineScore(self, bracketList ):
+        BRACKET_SCORE_MAPPING = { ")": 3, "]": 57, "}": 1197, ">": 25137 }
         score = 0
         for bracket in bracketList:
-            score+= Solution.BRACKET_SCORE_MAPPING[bracket]
-        
+            score += BRACKET_SCORE_MAPPING[bracket]
         return score
     
     def _computeCompletionScore(self, completionList ):
+        BRACKET_COMPLETION_SCORE_MAPPING = { ")": 1, "]": 2, "}": 3, ">": 4 }
         scoreList = []
         for bracketList in completionList:
             score = 0
             for bracket in bracketList:
-                score = score * 5 + Solution.BRACKET_COMPLETION_SCORE_MAPPING[bracket]
+                score = score * 5 + BRACKET_COMPLETION_SCORE_MAPPING[bracket]
             scoreList.append( score )
         scoreList.sort()
         middleElementIndex = len(scoreList)//2
@@ -50,7 +48,7 @@ class Solution:
                     if Solution.BRACKETS_PAIR_INVERTED[bracket] != top:
                         corruptLineBrackets.append(bracket)
                         break
-        score = self._computeScore( corruptLineBrackets )
+        score = self._computeCorruptedLineScore( corruptLineBrackets )
         print("Output 1: {}".format(score))
 
     def SolvePart2(self):

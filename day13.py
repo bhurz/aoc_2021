@@ -47,11 +47,11 @@ class Solution:
                         coords.add( ( x, y ) )
                 self.dotsCoord = coords
 
-        matrix = [[0]*40 for _ in range(6)]
+        matrix = [[" "]*40 for _ in range(6)]
         for i in range(6):
             for j in range(40):
                 if (j,i) in self.dotsCoord:
-                    matrix[i][j] = 1
+                    matrix[i][j] = "X"
         
         for i in range(6):
             print(matrix[i])

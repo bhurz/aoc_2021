@@ -1,48 +1,53 @@
+import collections
+import re
 import sys
-import heapq
-import itertools
-from collections import defaultdict, Counter, deque
+from collections import deque
 
 class Solution:
     def __init__( self, filePath ):
-        self.grid = []
+        self.graph = []
+
         with open( filePath, 'r' ) as fileHandle:
             lines = fileHandle.readlines()
-            for lineNum, line in enumerate(lines):
-                    self.grid.append( list( map( int, list(line.strip() ) ) ) )
+            for line in lines:
+                self.graph.append( list( map( int, list(line.strip())) ) )
 
-    def SolvePart1( self, n_tiles ):
-        R = len(self.grid)
-        C = len(self.grid[0])
-        DR = [-1,0,1,0]
-        DC = [0,1,0,-1]
+    def FindMinumumWeightNode(self):
+        minWeight = sys.maxsize
+        minu = 0
+        minv = 0
+        for key in self.D:
+            u , v = key
+            val = self.D[(u,v)]
+            if val < minWeight and (u,v) not in self.dst:
+                minWeight = val
+                minu = u
+                minv = v
+        return minWeight, minu, minv
 
-        D = [[None for _ in range(n_tiles*C)] for _ in range(n_tiles*R)]
-        Q = [(0,0,0)]
-        while Q:
-            (dist,r,c) = heapq.heappop(Q)
-            if r<0 or r>=n_tiles*R or c<0 or c>=n_tiles*C:
-                continue
+    def SolvePart1( self ):
+        vertices = len( self.graph )
+        self.dst = set()
+        self.D = {}
+        self.D[ ( 0, 0 ) ] = 0
+        
+        directions = [(0,1), (0, -1), (1,0), (-1, 0)]
+        while len(self.dst) < vertices*vertices:
+            w, u, v = self.FindMinumumWeightNode()
+            self.dst.add( (u, v ) )
+            for direction in directions:
+                new_u = u + direction[0]
+                new_v = v + direction[1]
+                if new_u >= 0 and new_u < vertices and new_v >=0 and new_v < vertices:
+                    new_w = w + self.graph[new_u][new_v]
+                    if (new_u, new_v) not in self.D:
+                        self.D[( new_u, new_v )] = new_w
+                    elif (new_u, new_v) in self.D and new_w < self.D[( new_u, new_v )]:
+                        self.D[( new_u, new_v )] = new_w
 
-            val = self.grid[r%R][c%C] + (r//R) + (c//C)
-            while val > 9:
-                val -= 9
-            rc_cost = dist + val
-
-            if D[r][c] is None or rc_cost < D[r][c]:
-                D[r][c] = rc_cost
-            else:
-                continue
-            if r==n_tiles*R-1 and c==n_tiles*C-1:
-                break
-
-            for d in range(4):
-                rr = r+DR[d]
-                cc = c+DC[d]
-                heapq.heappush(Q, (D[r][c],rr,cc))
-        return D[n_tiles*R-1][n_tiles*C-1] - self.grid[0][0]
+        return self.D[( vertices -1, vertices-1 )]
 
 if __name__ == '__main__':
     obj = Solution( "D:\\Github\\aoc_2021\\day14_input.txt" )
-    ans = obj.SolvePart1(5)
+    ans = obj.SolvePart1()
     print(ans)
